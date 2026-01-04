@@ -1,0 +1,76 @@
+GENERAL:
+  pro_name: face_pose  # face_pose,landmark
+  need_cal_centroid: True   # if need calculate the point cloud centriod
+  need_normalize: True  # Whether the point cloud needs to be normalized
+  need_augment: False # data enhancement
+  need_heatmap: False # calculate 3D heatmap
+  need_normal_vector: False
+  need_curvature: False
+
+  use_normal: False  # normal vector
+  use_curvature: False
+  use_augment: False
+  use_heatmap: False
+  decimal: '.3f'  # Number of decimal places to be retained
+  seed: 10
+
+DDP_PARAMETERS:
+  #  不要改该参数，系统会自动分配GPU，
+  #  当使用 DistributedDataParallel 包装模型时，可以使用 device_ids 参数指定要使用的 GPU 设备。如果不指定，则默认使用所有可用的 GPU。在这种情况下，
+  #  如果默认设备为 "cuda"，则会自动分配所有可用的 GPU
+  gpu: [7]
+
+  # 默认情况下，--dist-url 参数设置为 'env://'，表示使用环境变量中的值作为分布式训练的通信 URL。这意味着可以通过设置环境变量来指定分布式训练的通信方式，而不必在命令行中指定具体的 URL。
+  # 当然，也可以通过命令行参数的方式来指定具体的 URL，例如 --dist-url tcp://127.0.0.1:12345，其中 tcp://127.0.0.1:12345 是用于建立分布式训练连接的 URL。
+  # 如果要多机多GPU应该修改对应的IP地址，12345是随便找的一个空闲的端口，任意空闲端口都可以
+  MASTER_ADDR: 'localhost'
+  MASTER_PORT: '12346'
+  local_rank: -1
+  syncBN: True
+
+DATA:
+#  natural_face_path: '/home/hjc/Program/3D_face/pose/dataset/mutil_expression/procession_Data/after_fps/'
+#  rotat_face_path: '/home/hjc/Program/3D_face/pose/dataset/mutil_expression/angel/'
+
+  natural_face_path: '/home/hjc/Program/3D_face/pose/dataset/mutil_expression/test_data/procession_Data/after_fps/'
+  rotat_face_path: '/home/hjc/Program/3D_face/pose/dataset/mutil_expression/test_data/procession_Data/after_fps/'
+
+  # test data
+  dataset_name: 'mutil_expression/test_data'
+
+  root: '/home/hjc/Program/3D_face/pose'
+
+  sample_way : FPS   # choices=['FPS', 'Random', 'CAGQ', 'Geometric']
+  num_points : 3000
+
+  other_info: ' '  # additional information of log
+
+MODEL:
+  k: 20  # Number of nearest points
+  model_name: 'pointNet'  # choices=['ptnn','pt2','pt','PAConv','dgcnn','AdaptConv']
+  out_channel: 3
+
+  is_landmark: False
+  gps_points:
+  add_label : "_test_other"   # Additional documentation information
+
+
+TRAIN:
+  batch_size: 200
+  dropout: 0.5
+  epoch: 300
+  Lamda: 0.01
+
+  optim: 'adamw'
+  lr: 0.01
+  decay_rate: 1e-4
+  loss: 'adaptive_wing'  # 'mse', 'adaptive_wing'
+  scheduler: 'step'  # 'cos', 'step'
+
+#VALIDATION:
+
+
+TEST:
+  test_batch_size: 3
+  log_name: '2024-07-02_18-04'
+  test_file: ''
