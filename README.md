@@ -1,0 +1,2 @@
+# Accurate-3D-Head-Pose-Estimation-with-Neighboring-attention-Graph-Attention-Network
+We present a 3D head pose estimation method to overcome 2D limitations and point-cloud sparsity/unorderedness. We collect 3D head data with a structured light system, propose adaptive density sampling (ADS) with curvature-fitting soft projection, and design N-GAT to learn local/global features via attention. Experiments show strong accuracy.
